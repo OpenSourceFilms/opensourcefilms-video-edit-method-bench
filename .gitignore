@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+*.log
+env_fit_report.*
+leftovers/
+outputs/

@@ -1,0 +1,898 @@
+{
+  "6": {
+    "inputs": {
+      "clip_name1": "gemma_3_12B_it_fp8_scaled.safetensors",
+      "clip_name2": "ltx-2.3_text_projection_bf16.safetensors",
+      "type": "ltxv",
+      "device": "default"
+    },
+    "class_type": "DualCLIPLoader",
+    "_meta": {
+      "title": "DualCLIPLoader"
+    }
+  },
+  "7": {
+    "inputs": {
+      "vae_name": "LTX23_audio_vae_bf16.safetensors",
+      "device": "main_device",
+      "weight_dtype": "bf16"
+    },
+    "class_type": "VAELoaderKJ",
+    "_meta": {
+      "title": "VAELoader KJ"
+    }
+  },
+  "8": {
+    "inputs": {
+      "vae_name": "LTX23_video_vae_bf16.safetensors",
+      "device": "main_device",
+      "weight_dtype": "bf16"
+    },
+    "class_type": "VAELoaderKJ",
+    "_meta": {
+      "title": "VAELoader KJ"
+    }
+  },
+  "9": {
+    "inputs": {
+      "vae_name": "taeltx2_3.safetensors",
+      "device": "main_device",
+      "weight_dtype": "bf16"
+    },
+    "class_type": "VAELoaderKJ",
+    "_meta": {
+      "title": "VAELoader KJ"
+    }
+  },
+  "10": {
+    "inputs": {
+      "unet_name": "ltx-2.3-22b-dev-Q6_K.gguf"
+    },
+    "class_type": "UnetLoaderGGUF",
+    "_meta": {
+      "title": "Unet Loader (GGUF)"
+    }
+  },
+  "16": {
+    "inputs": {
+      "value": 24
+    },
+    "class_type": "PrimitiveInt",
+    "_meta": {
+      "title": "FPS"
+    }
+  },
+  "17": {
+    "inputs": {
+      "value": 5
+    },
+    "class_type": "PrimitiveInt",
+    "_meta": {
+      "title": "Length (seconds)"
+    }
+  },
+  "448": {
+    "inputs": {
+      "value": "Propagate the altered appearance from @reference across the entire guide video. Preserve the guide video exact camera movement, acceleration, orbit, perspective, parallax, framing, timing and late optical focus pull. Keep the actor completely absent. Preserve the altered wall, leaded window, sconce and photorealistic flame design. Permit natural flame motion only. Do not invent people, objects, geometry, camera movement or focus changes."
+    },
+    "class_type": "PrimitiveStringMultiline",
+    "_meta": {
+      "title": "Positive Prompt"
+    }
+  },
+  "484": {
+    "inputs": {
+      "frame_rate": [
+        "2161",
+        0
+      ],
+      "loop_count": 0,
+      "filename_prefix": "OrbitTurn_Reskin/EditAnything_Motion_R256/diagnostic_81f/reskin",
+      "format": "video/h264-mp4",
+      "pix_fmt": "yuv420p",
+      "crf": 16,
+      "save_metadata": true,
+      "trim_to_audio": false,
+      "pingpong": false,
+      "save_output": true,
+      "images": [
+        "446:2175",
+        0
+      ],
+      "audio": [
+        "487",
+        2
+      ]
+    },
+    "class_type": "VHS_VideoCombine",
+    "_meta": {
+      "title": "Video Combine \ud83c\udfa5\ud83c\udd65\ud83c\udd57\ud83c\udd62"
+    }
+  },
+  "487": {
+    "inputs": {
+      "video": "orbit_and_turn_4K8Bit_01.mov",
+      "force_rate": [
+        "2161",
+        0
+      ],
+      "custom_width": 0,
+      "custom_height": 0,
+      "frame_load_cap": [
+        "2188",
+        1
+      ],
+      "skip_first_frames": 0,
+      "select_every_nth": 1,
+      "format": "AnimateDiff"
+    },
+    "class_type": "VHS_LoadVideo",
+    "_meta": {
+      "title": "Input Video"
+    }
+  },
+  "488": {
+    "inputs": {
+      "image": "Orbit_and_turn_Firstframe_Flames_1088p_01.png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Reference Image"
+    }
+  },
+  "508": {
+    "inputs": {
+      "lora_name": "edit_anything_30k_v0.1_motion_transfer_r256.safetensors",
+      "strength_model": 1,
+      "model": [
+        "10",
+        0
+      ]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "Load LoRA"
+    }
+  },
+  "513": {
+    "inputs": {
+      "lora_name": "ltx-2/ltx-2.3-22b-distilled-lora-384-1.1.safetensors",
+      "strength_model": 0.6,
+      "model": [
+        "508",
+        0
+      ]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "Load LoRA"
+    }
+  },
+  "527": {
+    "inputs": {
+      "model": "BiRefNet-general",
+      "sensitivity": 0,
+      "mask_blur": 0,
+      "mask_offset": false,
+      "invert_output": false,
+      "refine_foreground": "Color",
+      "background": "#ffffff",
+      "background_color": "#222222",
+      "image": [
+        "528",
+        0
+      ]
+    },
+    "class_type": "BiRefNetRMBG",
+    "_meta": {
+      "title": "BiRefNet Remove Background (RMBG)"
+    }
+  },
+  "528": {
+    "inputs": {
+      "fit": "contain",
+      "background": "white",
+      "padding": 0,
+      "hard_edges": true,
+      "ref_image": [
+        "488",
+        0
+      ],
+      "size_mask": [
+        "536",
+        0
+      ]
+    },
+    "class_type": "LTXVResizeReferenceByMask",
+    "_meta": {
+      "title": "LTXV Resize Reference By Mask"
+    }
+  },
+  "530": {
+    "inputs": {
+      "images": [
+        "2234",
+        1
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
+  "534": {
+    "inputs": {
+      "start_index": 0,
+      "num_frames": 1,
+      "images": [
+        "489:309",
+        0
+      ]
+    },
+    "class_type": "GetImageRangeFromBatch",
+    "_meta": {
+      "title": "Get Image or Mask Range From Batch"
+    }
+  },
+  "536": {
+    "inputs": {
+      "channel": "red",
+      "image": [
+        "534",
+        0
+      ]
+    },
+    "class_type": "ImageToMask",
+    "_meta": {
+      "title": "Convert Image to Mask"
+    }
+  },
+  "2156": {
+    "inputs": {
+      "width": [
+        "2173",
+        0
+      ],
+      "height": [
+        "2173",
+        1
+      ],
+      "length": [
+        "2173",
+        2
+      ],
+      "batch_size": 1
+    },
+    "class_type": "EmptyLTXVLatentVideo",
+    "_meta": {
+      "title": "EmptyLTXVLatentVideo"
+    }
+  },
+  "2157": {
+    "inputs": {
+      "text": [
+        "448",
+        0
+      ],
+      "clip": [
+        "6",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "2158": {
+    "inputs": {
+      "text": "",
+      "clip": [
+        "6",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "2161": {
+    "inputs": {
+      "value": [
+        "16",
+        0
+      ]
+    },
+    "class_type": "ComfyNumberConvert",
+    "_meta": {
+      "title": "Convert Number"
+    }
+  },
+  "2169": {
+    "inputs": {
+      "value": 832
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "Resolution"
+    }
+  },
+  "2173": {
+    "inputs": {
+      "image": [
+        "489:309",
+        0
+      ]
+    },
+    "class_type": "GetImageSize",
+    "_meta": {
+      "title": "Get Image Size"
+    }
+  },
+  "2184": {
+    "inputs": {
+      "expression": "a*b",
+      "variables.a": [
+        "17",
+        0
+      ],
+      "variables.b": [
+        "16",
+        0
+      ]
+    },
+    "class_type": "SimpleCalculatorKJ",
+    "_meta": {
+      "title": "SimpleCalculatorKJ"
+    }
+  },
+  "2187": {
+    "inputs": {
+      "value": 24
+    },
+    "class_type": "easy int",
+    "_meta": {
+      "title": "Overlap"
+    }
+  },
+  "2188": {
+    "inputs": {
+      "expression": "a*b",
+      "variables.a": [
+        "17",
+        0
+      ],
+      "variables.b": [
+        "16",
+        0
+      ]
+    },
+    "class_type": "SimpleCalculatorKJ",
+    "_meta": {
+      "title": "SimpleCalculatorKJ"
+    }
+  },
+  "2211": {
+    "inputs": {
+      "inputcount": 2,
+      "direction": "right",
+      "match_image_size": false,
+      "Update inputs": null,
+      "image_1": [
+        "2215",
+        0
+      ],
+      "image_2": [
+        "446:2175",
+        0
+      ]
+    },
+    "class_type": "ImageConcatMulti",
+    "_meta": {
+      "title": "Image Concatenate Multi"
+    }
+  },
+  "2215": {
+    "inputs": {
+      "inputcount": 2,
+      "direction": "right",
+      "match_image_size": false,
+      "Update inputs": null,
+      "image_1": [
+        "2234",
+        1
+      ],
+      "image_2": [
+        "489:309",
+        0
+      ]
+    },
+    "class_type": "ImageConcatMulti",
+    "_meta": {
+      "title": "Image Concatenate Multi"
+    }
+  },
+  "2217": {
+    "inputs": {
+      "text_x": 10,
+      "text_y": 2,
+      "height": 200,
+      "font_size": 32,
+      "font_color": "white",
+      "label_color": "black",
+      "font": "FreeMono.ttf",
+      "text": [
+        "448",
+        0
+      ],
+      "direction": "down",
+      "image": [
+        "2211",
+        0
+      ]
+    },
+    "class_type": "AddLabel",
+    "_meta": {
+      "title": "Add Label"
+    }
+  },
+  "2234": {
+    "inputs": {
+      "empty_cache": true,
+      "gc_collect": true,
+      "unload_all_models": false,
+      "image_pass": [
+        "527",
+        0
+      ]
+    },
+    "class_type": "VRAM_Debug",
+    "_meta": {
+      "title": "VRAM Debug"
+    }
+  },
+  "2296": {
+    "inputs": {
+      "source": [
+        "446:2247",
+        2
+      ]
+    },
+    "class_type": "PreviewAny",
+    "_meta": {
+      "title": "Diff Metrics"
+    }
+  },
+  "2326": {
+    "inputs": {
+      "upscale_method": "lanczos",
+      "scale_by": 1,
+      "image": [
+        "489:309",
+        0
+      ]
+    },
+    "class_type": "ImageScaleBy",
+    "_meta": {
+      "title": "Upscale Image By"
+    }
+  },
+  "2327": {
+    "inputs": {
+      "upscale_method": "lanczos",
+      "scale_by": 1,
+      "image": [
+        "2234",
+        1
+      ]
+    },
+    "class_type": "ImageScaleBy",
+    "_meta": {
+      "title": "Upscale Image By"
+    }
+  },
+  "2331": {
+    "inputs": {
+      "empty_cache": true,
+      "gc_collect": true,
+      "unload_all_models": false
+    },
+    "class_type": "VRAM_Debug",
+    "_meta": {
+      "title": "VRAM Debug"
+    }
+  },
+  "2332": {
+    "inputs": {
+      "empty_cache": true,
+      "gc_collect": true,
+      "unload_all_models": true,
+      "any_input": [
+        "513",
+        0
+      ]
+    },
+    "class_type": "VRAM_Debug",
+    "_meta": {
+      "title": "VRAM Debug"
+    }
+  },
+  "489:311": {
+    "inputs": {
+      "value": "a*32"
+    },
+    "class_type": "easy simpleMath",
+    "_meta": {
+      "title": "easy simpleMath"
+    }
+  },
+  "489:317": {
+    "inputs": {
+      "a": 6.283185307179586,
+      "bg_threshold": 0.1,
+      "resolution": [
+        "489:2171",
+        1
+      ],
+      "image": [
+        "489:436",
+        0
+      ]
+    },
+    "class_type": "MiDaS-DepthMapPreprocessor",
+    "_meta": {
+      "title": "MiDaS Depth Map"
+    }
+  },
+  "489:319": {
+    "inputs": {
+      "low_threshold": 100,
+      "high_threshold": 200,
+      "resolution": [
+        "489:2171",
+        1
+      ],
+      "image": [
+        "489:437",
+        0
+      ]
+    },
+    "class_type": "CannyEdgePreprocessor",
+    "_meta": {
+      "title": "Canny Edge"
+    }
+  },
+  "489:436": {
+    "inputs": {
+      "switch": false,
+      "on_false": [
+        "489:2171",
+        0
+      ],
+      "on_true": [
+        "489:180",
+        0
+      ]
+    },
+    "class_type": "ComfySwitchNode",
+    "_meta": {
+      "title": "Pose"
+    }
+  },
+  "489:437": {
+    "inputs": {
+      "switch": false,
+      "on_false": [
+        "489:436",
+        0
+      ],
+      "on_true": [
+        "489:317",
+        0
+      ]
+    },
+    "class_type": "ComfySwitchNode",
+    "_meta": {
+      "title": "Depth"
+    }
+  },
+  "489:438": {
+    "inputs": {
+      "switch": false,
+      "on_false": [
+        "489:437",
+        0
+      ],
+      "on_true": [
+        "489:319",
+        0
+      ]
+    },
+    "class_type": "ComfySwitchNode",
+    "_meta": {
+      "title": "Canny"
+    }
+  },
+  "489:180": {
+    "inputs": {
+      "detect_hand": "enable",
+      "detect_body": "enable",
+      "detect_face": "enable",
+      "resolution": [
+        "489:2171",
+        1
+      ],
+      "bbox_detector": "yolox_l.onnx",
+      "pose_estimator": "dw-ll_ucoco_384_bs5.torchscript.pt",
+      "scale_stick_for_xinsr_cn": "disable",
+      "image": [
+        "489:2171",
+        0
+      ]
+    },
+    "class_type": "DWPreprocessor",
+    "_meta": {
+      "title": "DWPose Estimator"
+    }
+  },
+  "489:2171": {
+    "inputs": {
+      "width": [
+        "2169",
+        0
+      ],
+      "height": [
+        "2169",
+        0
+      ],
+      "upscale_method": "lanczos",
+      "keep_proportion": "resize",
+      "pad_color": "0, 0, 0",
+      "crop_position": "center",
+      "divisible_by": 32,
+      "device": "cpu",
+      "image": [
+        "487",
+        0
+      ]
+    },
+    "class_type": "ImageResizeKJv2",
+    "_meta": {
+      "title": "Resize Image v2"
+    }
+  },
+  "489:309": {
+    "inputs": {
+      "resize_type": "scale to multiple",
+      "resize_type.multiple": [
+        "489:311",
+        0
+      ],
+      "scale_method": "lanczos",
+      "input": [
+        "489:438",
+        0
+      ]
+    },
+    "class_type": "ResizeImageMaskNode",
+    "_meta": {
+      "title": "Resize Image/Mask"
+    }
+  },
+  "446:531": {
+    "inputs": {
+      "nag_scale": 10.88,
+      "nag_alpha": 0.25,
+      "nag_tau": 2.5,
+      "inplace": true,
+      "model": [
+        "2332",
+        0
+      ]
+    },
+    "class_type": "LTX2_NAG",
+    "_meta": {
+      "title": "LTX2 NAG"
+    }
+  },
+  "446:376": {
+    "inputs": {
+      "preview_rate": 8,
+      "model": [
+        "446:531",
+        0
+      ],
+      "vae": [
+        "9",
+        0
+      ]
+    },
+    "class_type": "LTX2SamplingPreviewOverride",
+    "_meta": {
+      "title": "LTX2 Sampling Preview Override"
+    }
+  },
+  "446:161": {
+    "inputs": {
+      "noise_seed": 42
+    },
+    "class_type": "RandomNoise",
+    "_meta": {
+      "title": "RandomNoise"
+    }
+  },
+  "446:157": {
+    "inputs": {
+      "sampler_name": "res_2s"
+    },
+    "class_type": "KSamplerSelect",
+    "_meta": {
+      "title": "KSamplerSelect"
+    }
+  },
+  "446:158": {
+    "inputs": {
+      "cfg": 1,
+      "model": [
+        "446:376",
+        0
+      ],
+      "positive": [
+        "2157",
+        0
+      ],
+      "negative": [
+        "2158",
+        0
+      ]
+    },
+    "class_type": "CFGGuider",
+    "_meta": {
+      "title": "CFG Guider"
+    }
+  },
+  "446:2175": {
+    "inputs": {
+      "samples": [
+        "446:2247",
+        0
+      ],
+      "vae": [
+        "8",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "446:164": {
+    "inputs": {
+      "tile_size": 768,
+      "overlap": 64,
+      "temporal_size": 4096,
+      "temporal_overlap": 8
+    },
+    "class_type": "VAEDecodeTiled",
+    "_meta": {
+      "title": "VAE Decode (Tiled)"
+    }
+  },
+  "446:184": {
+    "inputs": {
+      "positive": [
+        "2157",
+        0
+      ],
+      "negative": [
+        "2158",
+        0
+      ],
+      "latent": [
+        "446:2247",
+        0
+      ]
+    },
+    "class_type": "LTXVCropGuides",
+    "_meta": {
+      "title": "LTXVCropGuides"
+    }
+  },
+  "446:477": {
+    "inputs": {
+      "scheduler": "beta",
+      "steps": 4,
+      "denoise": 1,
+      "model": [
+        "446:376",
+        0
+      ]
+    },
+    "class_type": "BasicScheduler",
+    "_meta": {
+      "title": "BasicScheduler"
+    }
+  },
+  "446:2247": {
+    "inputs": {
+      "temporal_tile_size": [
+        "2184",
+        1
+      ],
+      "temporal_overlap": [
+        "2187",
+        0
+      ],
+      "blend_overlap": true,
+      "lora_name": "(none)",
+      "ref_resize_mode": "pad_to_fit",
+      "ref_strength": 1,
+      "guide_strength": 1,
+      "role_strength": 1,
+      "adaln_scale": 4,
+      "enable_ic_lora": true,
+      "enable_role_embedding": false,
+      "enable_adaln": true,
+      "reapply_per_chunk": true,
+      "enable_visual_crossattn": true,
+      "ref_context_scale": 0.01,
+      "ref_token_scale": 0.25,
+      "ref_start_block": 12,
+      "ref_end_block": 35,
+      "ref_init_from": "attn2",
+      "ref_init_seed": 42,
+      "ref_attn_lora_strength": 1,
+      "debug_ea": true,
+      "model": [
+        "446:376",
+        0
+      ],
+      "vae": [
+        "8",
+        0
+      ],
+      "noise": [
+        "446:161",
+        0
+      ],
+      "sampler": [
+        "446:157",
+        0
+      ],
+      "sigmas": [
+        "446:477",
+        0
+      ],
+      "guider": [
+        "446:158",
+        0
+      ],
+      "positive": [
+        "2157",
+        0
+      ],
+      "negative": [
+        "2158",
+        0
+      ],
+      "latents": [
+        "2156",
+        0
+      ],
+      "ref_image": [
+        "2327",
+        0
+      ],
+      "guide_frames": [
+        "2326",
+        0
+      ]
+    },
+    "class_type": "LTXVEditAnythingLoopingSampler",
+    "_meta": {
+      "title": "LTXV Edit Anything Looping Sampler"
+    }
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "EditAnything": {
+    "kind": "comfyui",
+    "preferred_roots": [
+      "<your-ltx23-comfyui-root>",
+      "<your-comfyui-root>"
+    ],
+    "required_custom_node_markers": [
+      "bfsnodes",
+      "videohelpersuite"
+    ],
+    "useful_custom_node_markers": [
+      "kjnodes",
+      "gguf",
+      "ltx"
+    ],
+    "required_model_patterns": [
+      "ltx-2.3",
+      "edit_anything"
+    ],
+    "notes": "Prefer the existing LTX 2.3 Comfy root. Install BFSNodes only into a root already proven to load the current LTX 2.3 base workflow. Confirmed 2026-08-06: ComfyUI_LTX23's own models/ subdirs are all empty placeholders -- real weights (ltx-2.3-22b-dev, distilled/in-outpainting/clean-plate LoRAs, complete Gemma-3-12B dir) live in <your-shared-models-dir>/ and are only reachable if extra_model_paths.yaml is active; right now only extra_model_paths.yaml.example exists (the .example suffix means it is NOT active unless ComfyUI is launched with an explicit --extra-model-paths-config flag pointing at it). No edit_anything_* weight files exist anywhere in models_shared -- those 6 required Edit Anything model files still need downloading regardless of the path-config fix. BFSNodes is not cloned anywhere on this pod."
+  },
+  "FlexAM": {
+    "kind": "comfyui",
+    "preferred_roots": [
+      "<your-flexam-comfyui-root>"
+    ],
+    "required_custom_node_markers": [
+      "flexam",
+      "videohelpersuite"
+    ],
+    "useful_custom_node_markers": [
+      "kjnodes",
+      "sam2"
+    ],
+    "required_model_patterns": [
+      "Wan2.2-Fun-5B",
+      "densetrack3d.pth"
+    ],
+    "ideal_python": "3.10",
+    "ideal_torch": "2.5.1",
+    "ideal_cuda": "12.1",
+    "notes": "Do not install the pinned FlexAM stack into the LTX environment. Reuse only a FlexAM-specific or closely matching Python 3.10 / torch 2.5.1 root."
+  },
+  "Ditto": {
+    "kind": "comfyui",
+    "preferred_roots": [
+      "<your-wanvace-comfyui-root>",
+      "<your-ditto-comfyui-root>",
+      "<your-wan-comfyui-root>"
+    ],
+    "avoid_roots": [
+      "<your-scail2-comfyui-root>"
+    ],
+    "required_custom_node_markers": [
+      "wanvideowrapper",
+      "kjnodes",
+      "videohelpersuite"
+    ],
+    "required_model_patterns": [
+      "Wan2_1-T2V-14B",
+      "Wan2_1_VAE",
+      "umt5-xxl",
+      "Ditto"
+    ],
+    "notes": "A compatible WanVideoWrapper root is the best fit. The official graph is the low-VRAM quantized/distilled path. ComfyUI_WANVACE (has ComfyUI-WanVideoWrapper, VideoHelperSuite, kjnodes, wanvaceadvanced) is the purpose-built VACE root and the recommended target -- confirmed 2026-08-06 that it has none of the required Wan2.1/umt5/Ditto weights staged yet (models/{diffusion_models,vae,text_encoders} are empty placeholders), so this is an install_nodes_or_models_only case, not safe_reuse. Do NOT use ComfyUI_SCAIL2 even though it also matches the node markers: CODE_HANDOVER.md's non-negotiable constraints explicitly bar returning to SCAIL-2 as a comparison path for this shot, and it has no matching model weights either (only an unrelated SCAIL2 relight LoRA) -- the raw scanner score alone will rank it above WANVACE by node-marker overlap, which is why this override exists."
+  },
+  "SyncLoRA": {
+    "kind": "cli",
+    "preferred_roots": [
+      "<your-ltx-2-clone>"
+    ],
+    "required_repo_markers": [
+      "ltx_pipelines"
+    ],
+    "required_model_patterns": [
+      "ltx-2.3-22b-dev",
+      "ltx-2.3-sync-lora-3d1t-r256",
+      "ltx-2.3-22b-distilled-lora",
+      "ltx-2.3-spatial-upscaler",
+      "gemma"
+    ],
+    "notes": "No faithful canonical ComfyUI graph is asserted. Prefer an existing official LTX-2 / ltx-pipelines environment."
+  },
+  "KiwiEdit": {
+    "kind": "cli",
+    "preferred_roots": [
+      "<your-kiwi-edit-clone>"
+    ],
+    "required_repo_markers": [
+      "diffusers_demo.py"
+    ],
+    "required_model_patterns": [
+      "kiwi-edit-5b-instruct-reference-diffusers"
+    ],
+    "ideal_python": "3.10",
+    "ideal_torch": "2.7",
+    "ideal_cuda": "12.8",
+    "ideal_transformers": "4.57.0",
+    "notes": "No canonical ComfyUI workflow is asserted. Prefer a dedicated Kiwi environment; do not force its torch/diffusers stack into an existing Comfy root."
+  }
+}

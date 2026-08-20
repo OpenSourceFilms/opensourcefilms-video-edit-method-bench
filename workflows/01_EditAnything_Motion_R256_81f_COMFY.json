@@ -1,0 +1,763 @@
+{
+  "last_node_id": 9,
+  "last_link_id": 9,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "MarkdownNote",
+      "pos": [
+        -880,
+        -170
+      ],
+      "size": [
+        600,
+        160
+      ],
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "widgets_values": [
+        "Orbit and Turn diagnostic wrapper for Edit Anything on LTX 2.3. This is the single chosen Comfy path for the comparison: motion transfer, r256 LoRA, 81 frames at 24 fps. Use the source video as motion guide and the altered first frame as the appearance guide. This wrapper was hand-authored inside the pod because the upstream JSON could not be redownloaded here; if a local installed node uses a slightly different class name, replace the missing node with the matching Edit Anything/BFSNodes node and keep the same wiring intent."
+      ],
+      "properties": {
+        "Node name for S&R": "MarkdownNote"
+      }
+    },
+    {
+      "id": 2,
+      "type": "VHS_LoadVideo",
+      "pos": [
+        -740,
+        190
+      ],
+      "size": [
+        367,
+        556
+      ],
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "meta_batch",
+          "type": "VHS_BatchManager",
+          "link": null,
+          "shape": 7
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": null,
+          "shape": 7
+        },
+        {
+          "name": "video",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "video"
+          }
+        },
+        {
+          "name": "force_rate",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "force_rate"
+          }
+        },
+        {
+          "name": "custom_width",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "custom_width"
+          }
+        },
+        {
+          "name": "custom_height",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "custom_height"
+          }
+        },
+        {
+          "name": "frame_load_cap",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "frame_load_cap"
+          }
+        },
+        {
+          "name": "skip_first_frames",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "skip_first_frames"
+          }
+        },
+        {
+          "name": "select_every_nth",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "select_every_nth"
+          }
+        },
+        {
+          "name": "format",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "format"
+          },
+          "shape": 7
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            1
+          ]
+        },
+        {
+          "name": "frame_count",
+          "type": "INT"
+        },
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "links": [
+            9
+          ]
+        },
+        {
+          "name": "video_info",
+          "type": "VHS_VIDEOINFO",
+          "links": []
+        }
+      ],
+      "widgets_values": {
+        "video": "orbit_and_turn_4K8Bit_01.mov",
+        "force_rate": 24,
+        "custom_width": 0,
+        "custom_height": 0,
+        "frame_load_cap": 81,
+        "skip_first_frames": 0,
+        "select_every_nth": 1,
+        "format": "AnimateDiff",
+        "choose video to upload": "image",
+        "videopreview": {
+          "paused": false,
+          "hidden": false,
+          "params": {
+            "force_rate": 24,
+            "filename": "orbit_and_turn_4K8Bit_01.mov",
+            "select_every_nth": 1,
+            "frame_load_cap": 81,
+            "format": "video/mp4",
+            "skip_first_frames": 0,
+            "type": "input"
+          }
+        }
+      },
+      "properties": {
+        "cnr_id": "comfyui-videohelpersuite",
+        "Node name for S&R": "VHS_LoadVideo"
+      }
+    },
+    {
+      "id": 3,
+      "type": "LoadImage",
+      "pos": [
+        -730,
+        780
+      ],
+      "size": [
+        315,
+        314
+      ],
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "image"
+          }
+        },
+        {
+          "name": "upload",
+          "type": "IMAGEUPLOAD",
+          "link": null,
+          "widget": {
+            "name": "upload"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            2
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": []
+        }
+      ],
+      "widgets_values": [
+        "Orbit_and_turn_Firstframe_Flames_1088p_01.png",
+        "image"
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "Node name for S&R": "LoadImage"
+      }
+    },
+    {
+      "id": 4,
+      "type": "CLIPTextEncode",
+      "pos": [
+        -320,
+        -10
+      ],
+      "size": [
+        425,
+        180
+      ],
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "text",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "text"
+          }
+        },
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": null,
+          "shape": 7
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            3
+          ]
+        }
+      ],
+      "widgets_values": [
+        "Use the altered first frame as the appearance target for the source video. Keep the actor completely absent. Preserve the altered wall, leaded window, sconce and photorealistic flame treatment. Retain the source camera path, acceleration, orbit, framing, perspective, parallax, timing and optical focus pull exactly. Maintain strict frame-to-frame geometry and texture identity. Permit only natural flame motion. Do not add people or objects."
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "Node name for S&R": "CLIPTextEncode"
+      }
+    },
+    {
+      "id": 5,
+      "type": "CLIPTextEncode",
+      "pos": [
+        -320,
+        220
+      ],
+      "size": [
+        425,
+        180
+      ],
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "text",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "text"
+          }
+        },
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": null,
+          "shape": 7
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            4
+          ]
+        }
+      ],
+      "widgets_values": [
+        "restored actor, any person, extra people, invented object, changed room geometry, changed camera path, changed acceleration, wrong parallax, wrong focus timing, texture crawl, flicker, temporal drift, late-shot reference decay, blur, low detail"
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "Node name for S&R": "CLIPTextEncode"
+      }
+    },
+    {
+      "id": 6,
+      "type": "EditAnythingModuleLoader",
+      "pos": [
+        130,
+        590
+      ],
+      "size": [
+        360,
+        180
+      ],
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "module_name",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "module_name"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "ea_module",
+          "type": "EA_MODULE",
+          "links": [
+            6
+          ]
+        }
+      ],
+      "widgets_values": [
+        "None (motion-transfer path)"
+      ],
+      "properties": {
+        "aux_id": "alisson-anjos/EditAnything",
+        "Node name for S&R": "EditAnythingModuleLoader"
+      }
+    },
+    {
+      "id": 7,
+      "type": "LoraLoaderModelOnly",
+      "pos": [
+        110,
+        330
+      ],
+      "size": [
+        360,
+        160
+      ],
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": null,
+          "shape": 7
+        },
+        {
+          "name": "lora_name",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "lora_name"
+          }
+        },
+        {
+          "name": "strength_model",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "strength_model"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            5
+          ]
+        }
+      ],
+      "widgets_values": [
+        "edit_anything_30k_v1.1_motion_transfer_r256.safetensors",
+        1.0
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "Node name for S&R": "LoraLoaderModelOnly"
+      }
+    },
+    {
+      "id": 8,
+      "type": "EditAnythingSampler",
+      "pos": [
+        535,
+        20
+      ],
+      "size": [
+        390,
+        520
+      ],
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 5
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 3
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 4
+        },
+        {
+          "name": "source_video",
+          "type": "IMAGE",
+          "link": 1
+        },
+        {
+          "name": "reference_image",
+          "type": "IMAGE",
+          "link": 2
+        },
+        {
+          "name": "editanything_module",
+          "type": "EA_MODULE",
+          "link": 6
+        },
+        {
+          "name": "window_size",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "window_size"
+          }
+        },
+        {
+          "name": "overlap",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "overlap"
+          }
+        },
+        {
+          "name": "num_frames",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "num_frames"
+          }
+        },
+        {
+          "name": "frame_rate",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "frame_rate"
+          }
+        },
+        {
+          "name": "seed",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "seed"
+          }
+        },
+        {
+          "name": "steps",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "steps"
+          }
+        },
+        {
+          "name": "cfg",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "cfg"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "links": [
+            8
+          ]
+        }
+      ],
+      "widgets_values": [
+        80,
+        24,
+        81,
+        24,
+        42,
+        "fixed",
+        50,
+        7.0
+      ],
+      "properties": {
+        "aux_id": "alisson-anjos/EditAnything",
+        "Node name for S&R": "EditAnythingSampler"
+      }
+    },
+    {
+      "id": 9,
+      "type": "VHS_VideoCombine",
+      "pos": [
+        990,
+        65
+      ],
+      "size": [
+        391,
+        602
+      ],
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 8,
+          "label": "images"
+        },
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "link": null,
+          "label": "audio"
+        },
+        {
+          "name": "meta_batch",
+          "type": "VHS_BatchManager",
+          "link": null,
+          "label": "meta_batch",
+          "shape": 7
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": null,
+          "shape": 7
+        },
+        {
+          "name": "frame_rate",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "frame_rate"
+          }
+        },
+        {
+          "name": "loop_count",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "loop_count"
+          }
+        },
+        {
+          "name": "filename_prefix",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "filename_prefix"
+          }
+        },
+        {
+          "name": "format",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "format"
+          }
+        },
+        {
+          "name": "pingpong",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "pingpong"
+          }
+        },
+        {
+          "name": "save_output",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "save_output"
+          }
+        },
+        {
+          "name": "pix_fmt",
+          "type": [
+            "yuv420p",
+            "yuv420p10le"
+          ],
+          "link": null,
+          "widget": {
+            "name": "pix_fmt"
+          }
+        },
+        {
+          "name": "crf",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "crf"
+          }
+        },
+        {
+          "name": "save_metadata",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "save_metadata"
+          }
+        },
+        {
+          "name": "trim_to_audio",
+          "type": "BOOLEAN",
+          "link": null,
+          "widget": {
+            "name": "trim_to_audio"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "Filenames",
+          "type": "VHS_FILENAMES",
+          "label": "Filenames",
+          "slot_index": 0
+        }
+      ],
+      "widgets_values": {
+        "frame_rate": 24,
+        "loop_count": 0,
+        "filename_prefix": "OrbitTurn_Reskin/EditAnything/diagnostic_81f/reskin",
+        "format": "video/h264-mp4",
+        "pix_fmt": "yuv420p",
+        "crf": 16,
+        "save_metadata": true,
+        "trim_to_audio": false,
+        "pingpong": false,
+        "save_output": true,
+        "videopreview": {
+          "hidden": false,
+          "paused": false,
+          "params": {}
+        }
+      },
+      "properties": {
+        "cnr_id": "comfyui-videohelpersuite",
+        "Node name for S&R": "VHS_VideoCombine"
+      }
+    }
+  ],
+  "links": [
+    [
+      1,
+      2,
+      0,
+      8,
+      3,
+      "IMAGE"
+    ],
+    [
+      2,
+      3,
+      0,
+      8,
+      4,
+      "IMAGE"
+    ],
+    [
+      3,
+      4,
+      0,
+      8,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      4,
+      5,
+      0,
+      8,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      5,
+      7,
+      0,
+      8,
+      0,
+      "MODEL"
+    ],
+    [
+      6,
+      6,
+      0,
+      8,
+      5,
+      "EA_MODULE"
+    ],
+    [
+      8,
+      8,
+      0,
+      9,
+      0,
+      "IMAGE"
+    ],
+    [
+      9,
+      2,
+      2,
+      9,
+      1,
+      "AUDIO"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {},
+  "version": 0.4
+}

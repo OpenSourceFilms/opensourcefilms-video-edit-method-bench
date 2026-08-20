@@ -1,0 +1,27 @@
+{
+  "media_dir": "<path-to-your-shot-plates>",
+  "source_video": "orbit_and_turn_4K8Bit_01.mov",
+  "altered_first_frame": "Orbit_and_turn_Firstframe_Flames_1088p_01.png",
+  "altered_middle_frame": "Orbit_and_turn_Middleframe_Flames_1088p_02.png",
+  "altered_last_frame": "Orbit_and_turn_Lastframe_Flames_1088p_02.png",
+  "source_fps": 24,
+  "source_frames": 264,
+  "middle_frame_index": 132,
+  "diagnostic_frames": {
+    "edit_anything": 81,
+    "sync_lora": 81,
+    "flexam": 97,
+    "kiwi_edit": 81,
+    "ditto": 73
+  },
+  "outputs": {
+    "edit_anything_motion_r256": "OrbitTurn_Reskin/EditAnything_Motion_R256/diagnostic_81f",
+    "edit_anything_motion_r128": "OrbitTurn_Reskin/EditAnything_Motion_R128/diagnostic_81f",
+    "edit_anything_ref_full": "OrbitTurn_Reskin/EditAnything_RefV2V_Full/diagnostic_81f",
+    "edit_anything_ref_simple": "OrbitTurn_Reskin/EditAnything_RefV2V_Simple/diagnostic_81f",
+    "sync_lora": "OrbitTurn_Reskin/SyncLoRA/diagnostic_81f.mp4",
+    "flexam": "OrbitTurn_Reskin/FlexAM/diagnostic_97f",
+    "kiwi_edit": "OrbitTurn_Reskin/KiwiEdit/diagnostic_81f.mp4",
+    "ditto": "OrbitTurn_Reskin/Ditto/diagnostic_73f"
+  }
+}
