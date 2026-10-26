@@ -72,6 +72,72 @@ class InputStageSafetyTests(unittest.TestCase):
                 stage.stage_inputs(self.comfy, self.shot, copy=True)
         self.assertEqual(contender.read_bytes(), b"other-process-won")
 
+    def test_copy_target_is_invisible_until_stream_is_complete(self):
+        target = self.comfy / "input" / stage.FILES[0]
+        original_copy = stage.shutil.copyfileobj
+        observed = []
+
+        def inspect_mid_stream(reader, writer, length):
+            first = reader.read(5)
+            writer.write(first)
+            writer.flush()
+            observed.append({
+                "target_visible": target.exists() or target.is_symlink(),
+                "staging_files": sorted(target.parent.glob(f".{target.name}.*.staging")),
+                "partial": first,
+            })
+            original_copy(reader, writer, length=length)
+
+        with mock.patch.object(stage.shutil, "copyfileobj", side_effect=inspect_mid_stream):
+            stage.stage_inputs(self.comfy, self.shot, copy=True)
+
+        self.assertEqual(len(observed), 4)
+        self.assertFalse(observed[0]["target_visible"])
+        self.assertEqual(len(observed[0]["staging_files"]), 1)
+        self.assertEqual(observed[0]["partial"], b"synt")
+        self.assertEqual(target.read_bytes(), (self.shot / stage.FILES[0]).read_bytes())
+        self.assertEqual(list((self.comfy / "input").glob("*.staging")), [])
+        self.assertEqual(list((self.comfy / "input").glob(".*.staging")), [])
+
+    def test_copy_collision_at_atomic_publication_preserves_contender(self):
+        target = self.comfy / "input" / stage.FILES[0]
+        native_link = stage.os.link
+        observed = []
+
+        def competing_link(source, destination, **kwargs):
+            if destination == target:
+                observed.append(Path(source).read_bytes())
+                self.assertFalse(target.exists())
+                target.write_bytes(b"other-process-published-first")
+            return native_link(source, destination, **kwargs)
+
+        with mock.patch.object(stage.os, "link", side_effect=competing_link):
+            with self.assertRaises(FileExistsError):
+                stage.stage_inputs(self.comfy, self.shot, copy=True)
+
+        self.assertEqual(observed, [(self.shot / stage.FILES[0]).read_bytes()])
+        self.assertEqual(target.read_bytes(), b"other-process-published-first")
+        self.assertEqual(list(target.parent.glob(".*.staging")), [])
+        self.assertFalse((target.parent / stage.FILES[1]).exists())
+
+    def test_dangling_symlink_claiming_output_at_publication_is_preserved(self):
+        target = self.comfy / "input" / stage.FILES[0]
+        native_link = stage.os.link
+
+        def competing_link(source, destination, **kwargs):
+            if destination == target:
+                target.symlink_to(self.root / "uncreated-external-target")
+            return native_link(source, destination, **kwargs)
+
+        with mock.patch.object(stage.os, "link", side_effect=competing_link):
+            with self.assertRaises(FileExistsError):
+                stage.stage_inputs(self.comfy, self.shot, copy=True)
+
+        self.assertTrue(target.is_symlink())
+        self.assertEqual(target.readlink(), self.root / "uncreated-external-target")
+        self.assertFalse((self.root / "uncreated-external-target").exists())
+        self.assertEqual(list(target.parent.glob(".*.staging")), [])
+
     def test_stream_failure_removes_only_own_incomplete_file(self):
         target = self.comfy / "input" / stage.FILES[0]
 
@@ -83,6 +149,7 @@ class InputStageSafetyTests(unittest.TestCase):
             with self.assertRaisesRegex(OSError, "fabricated disk error"):
                 stage.stage_inputs(self.comfy, self.shot, copy=True)
         self.assertFalse(target.exists())
+        self.assertEqual(list(target.parent.glob(".*.staging")), [])
         self.assertEqual((self.shot / stage.FILES[0]).read_bytes(), b"synthetic-pixels-0")
 
     def test_symlinked_comfy_input_directory_is_not_followed(self):
