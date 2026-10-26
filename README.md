@@ -85,13 +85,19 @@ The base models and checkpoints are not redistributed here.
 3. Use `env/stage_inputs.py` to link your own source plate and reference frames into a ComfyUI
    install's `input/` directory. The helper checks **all four required source
    files and destination conflicts before staging any file**. Default mode
-   creates symlinks; `--copy` creates regular files with exclusive creation,
-   **never overwriting** an existing path, even if another process creates it
-   during the copy. A failed copy removes only its own incomplete destination.
-   Previously staged symlinks to the same source are accepted; copied files
-   already at the destination are treated as conflicts, not overwritten.
-   Source files and other existing destination files are never deleted.
-   Symlinked `input/` directories are refused for this historical helper.
+   creates symlinks; `--copy` streams into a hidden same-directory
+   `.staging` file, fsyncs it, then atomically publishes a complete regular
+   file under its final name using create-only hard-link semantics. **ComfyUI
+   will not see a partial final filename during copying**, and an existing
+   file or dangling symlink is never overwritten, even if another process
+   claims the target during the copy. A failed copy removes only its own
+   temporary staging file. Previously staged symlinks to the same source
+   are accepted; copied files already at the destination are treated as
+   conflicts. Source files and other existing destination files are never
+   deleted. Symlinked `input/` directories are refused for this historical
+   helper. Use a destination on a filesystem supporting same-directory
+   hard links; concurrent mutation of the input directory is not protected
+   by a process-level lock.
 4. For the ComfyUI-based methods (Edit Anything, FlexAM), load a graph from `workflows/` or
    `workflows/generated/`. For the CLI-based methods (Sync-LoRA, Kiwi-Edit, Ditto high-quality),
    use the corresponding script under `cli/` — each requires you to set an environment variable or
