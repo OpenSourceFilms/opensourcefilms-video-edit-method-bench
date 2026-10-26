@@ -83,7 +83,15 @@ The base models and checkpoints are not redistributed here.
 2. Run `env/scan_runpod_envs.py` to see which existing installs (if any) already satisfy a method's
    requirements, using `config/fit_requirements.json`.
 3. Use `env/stage_inputs.py` to link your own source plate and reference frames into a ComfyUI
-   install's `input/` directory.
+   install's `input/` directory. The helper checks **all four required source
+   files and destination conflicts before staging any file**. Default mode
+   creates symlinks; `--copy` creates regular files with exclusive creation,
+   **never overwriting** an existing path, even if another process creates it
+   during the copy. A failed copy removes only its own incomplete destination.
+   Previously staged symlinks to the same source are accepted; copied files
+   already at the destination are treated as conflicts, not overwritten.
+   Source files and other existing destination files are never deleted.
+   Symlinked `input/` directories are refused for this historical helper.
 4. For the ComfyUI-based methods (Edit Anything, FlexAM), load a graph from `workflows/` or
    `workflows/generated/`. For the CLI-based methods (Sync-LoRA, Kiwi-Edit, Ditto high-quality),
    use the corresponding script under `cli/` — each requires you to set an environment variable or
