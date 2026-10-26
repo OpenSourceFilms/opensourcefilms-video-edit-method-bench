@@ -1,9 +1,15 @@
 # Third-Party Licenses
 
-This repo does not vendor the six evaluated methods' own model weights, and vendors their code only
-where the upstream license clearly permits it (see per-component notes below). OSF's own code,
-config, generated ComfyUI workflow graphs, and documentation in this repo are MIT-licensed — see
-`LICENSE`. Everything below documents the tools being compared, not this repo's own contents.
+This repository does not redistribute any evaluated model weights. **Some included ComfyUI
+workflow JSON is derived from upstream Apache-2.0-licensed workflow graphs**
+(Edit Anything and FlexAM), with OSF parameter and graph modifications.
+These inherited portions are not solely OSF-authored and do not become
+exclusive OSF MIT material. OSF's independently authored code, configuration,
+documentation and original modifications are MIT-licensed; the upstream
+portions retain their licences and required notices. See
+[workflow-specific provenance and modification notices](workflows/UPSTREAM_NOTICES.md)
+and the included [Apache-2.0 licence text](LICENSES/Apache-2.0.txt).
+The model/checkpoint and software licences below remain separate.
 
 Verified directly against each upstream project's own repository LICENSE file or Hugging Face model
 card `license` metadata (not inferred from README prose or reputation), 2026-08-20.

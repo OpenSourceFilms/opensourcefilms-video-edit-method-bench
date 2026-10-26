@@ -22,9 +22,13 @@ SOFTWARE.
 
 ---
 
-This license applies to Open Source Films' own code, configuration, and
-documentation in this repository only. The methods evaluated here (Edit
-Anything, FlexAM, Ditto/Editto, LTX-2 Sync-LoRA, Kiwi-Edit) are not vendored
-in full here and each keeps its own upstream license — see
-THIRD_PARTY_LICENSES.md. The ComfyUI workflow graphs included here reference
-third-party node types by name but do not embed third-party source code.
+The MIT grant above applies only to original Open Source Films code,
+configuration, documentation and original modifications to workflows.
+Some committed ComfyUI workflow JSON files were **materialized from upstream
+Apache-2.0-licensed workflow JSON** published by Edit Anything and FlexAM,
+rather than independently authored from scratch. Original third-party
+portions retain their Apache-2.0 rights and attribution requirements.
+See workflows/UPSTREAM_NOTICES.md and LICENSES/Apache-2.0.txt. This
+repository does not redistribute third-party models or weights.
+The other evaluated methods retain their own upstream terms, described
+in THIRD_PARTY_LICENSES.md.
