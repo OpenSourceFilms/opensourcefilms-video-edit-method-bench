@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import importlib.util
+import stat
 from pathlib import Path
 from unittest import mock
 import tempfile
@@ -37,6 +38,26 @@ class InputStageSafetyTests(unittest.TestCase):
         with self.assertRaises(FileExistsError):
             stage.stage_inputs(self.comfy, self.shot, copy=True)
         self.assertEqual(targets[0].read_bytes(), (self.shot / stage.FILES[0]).read_bytes())
+
+    def test_copy_matches_normal_file_creation_permissions(self):
+        # A final copy should be as readable to a separate ComfyUI process
+        # as a file created with Path.open("xb") under the same process umask.
+        # This avoids mkstemp's unconditional 0o600 without overriding a
+        # restrictive umask deliberately configured by the operator.
+        dest = self.comfy / "input"
+        dest.mkdir()
+        probe = dest / "permission-probe"
+        with probe.open("xb") as writer:
+            writer.write(b"probe")
+        expected_mode = stat.S_IMODE(probe.stat().st_mode)
+        probe.unlink()
+
+        targets = stage.stage_inputs(self.comfy, self.shot, copy=True)
+        self.assertEqual(len(targets), 4)
+        for target in targets:
+            self.assertEqual(stat.S_IMODE(target.stat().st_mode), expected_mode)
+            self.assertEqual(target.read_bytes(), (self.shot / target.name).read_bytes())
+        self.assertEqual(list(dest.glob(".*.staging")), [])
 
     def test_symlink_stage_remains_idempotent(self):
         targets = stage.stage_inputs(self.comfy, self.shot)

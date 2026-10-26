@@ -11,7 +11,7 @@ import argparse
 import os
 from pathlib import Path
 import shutil
-import tempfile
+import secrets
 
 FILES = [
     "orbit_and_turn_4K8Bit_01.mov",
@@ -30,9 +30,19 @@ def _exclusive_copy(source: Path, target: Path) -> None:
     files or dangling symlinks without overwriting them. Only our temporary
     file is removed on failure, including a competing destination race.
     """
-    fd, temp_name = tempfile.mkstemp(
-        prefix=f".{target.name}.", suffix=".staging", dir=target.parent
-    )
+    # Match Path.open("xb") creation permissions (0o666 filtered by the
+    # process umask). tempfile.mkstemp() forces mode 0o600, which can make
+    # copied inputs unreadable to ComfyUI when it runs as another user.
+    # Preserve exclusive creation and an unpredictable hidden staging name.
+    for _ in range(10):
+        temp_name = target.parent / f".{target.name}.{secrets.token_hex(16)}.staging"
+        try:
+            fd = os.open(temp_name, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o666)
+            break
+        except FileExistsError:
+            continue
+    else:
+        raise FileExistsError("Unable to allocate an exclusive staging filename")
     try:
         with os.fdopen(fd, "wb") as writer:
             with source.open("rb") as reader:
