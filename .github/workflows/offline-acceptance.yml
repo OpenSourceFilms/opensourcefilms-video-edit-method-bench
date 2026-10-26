@@ -1,0 +1,39 @@
+name: Offline video edit method bench acceptance
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/offline-acceptance.yml"
+      - "tests/**"
+      - "validation/**"
+      - "workflows/**"
+      - "config/**"
+      - "env/**"
+      - "materialize/**"
+      - "cli/**"
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  offline-acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout published source
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - name: Python 3.11
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: "3.11"
+      - name: Synthetic validator regression tests
+        run: python3 -B -m unittest discover -s tests -p 'test_*.py' -v
+      - name: Existing offline syntax and publication checks
+        run: bash tests/selfcheck.sh
+      - name: Validate all published workflows
+        run: |
+          python3 -B validation/validate_comfy_workflows.py workflows > "${{ runner.temp }}/bench-graphs.json"
+          python3 -B -c 'import json,sys; a=json.load(open(sys.argv[1])); assert len(a)==11 and all(x["ok"] and x["graphs"]>0 for x in a); assert sum(x["format"]=="api" for x in a)==2' "${{ runner.temp }}/bench-graphs.json"

@@ -85,6 +85,27 @@ Full per-component licensing findings: `THIRD_PARTY_LICENSES.md`.
 See `RUNPOD.md` for how this was actually run on a Runpod pod, including the environment-fit
 scanning approach.
 
+## Offline validation and CI
+
+The [offline acceptance workflow](.github/workflows/offline-acceptance.yml)
+runs on GitHub Actions without ComfyUI, GPUs, model weights or source footage.
+It invokes the existing shell/Python syntax and publication checks, 13
+synthetic validator regressions, and the structural validator against all
+**11 published workflow JSON files**.
+
+The validator recognises both editor/UI graphs and ComfyUI API prompts. API
+node IDs may be numeric strings or namespaced strings such as `489:311`.
+Malformed/missing API upstream links and invalid node declarations now fail
+instead of reporting a successful check of **zero graphs**.
+
+**Limits:** Several official upstream UI exports contain nested, object-form
+link records that this standalone validator cannot fully interpret. Those
+records produce warnings, not a claim of validated runtime connectivity.
+A clean CI result proves basic JSON/known-link consistency only. It does
+not prove upstream node availability, weights, licences, correct inputs,
+ability to run inference, or video quality. The archived comparison results
+and original experimental methods are unchanged.
+
 ## Status
 
 Research evaluation / method comparison, run once to completion on 2026-08-06 against a specific
