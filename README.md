@@ -23,6 +23,15 @@ repo documents what was actually tried and found.
 
 Full per-component licensing findings: `THIRD_PARTY_LICENSES.md`.
 
+**Upstream-workflow attribution:** the Edit Anything and FlexAM ComfyUI
+graphs in this repository were adapted from their respective upstream
+Apache-2.0-licensed workflow JSON, not authored wholly from scratch by
+OSF. The original graph expression retains its upstream licence, while
+OSF's own additions are licensed only to the extent OSF owns them. See
+[UPSTREAM_NOTICES.md](workflows/UPSTREAM_NOTICES.md) for sources and recorded
+modifications, and [Apache-2.0 licence text](LICENSES/Apache-2.0.txt).
+The base models and checkpoints are not redistributed here.
+
 ## What's here
 
 - **`env/scan_runpod_envs.py`** — a real Runpod-environment-fit scanner: walks the pod's existing
