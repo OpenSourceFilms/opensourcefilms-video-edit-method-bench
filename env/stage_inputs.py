@@ -11,6 +11,7 @@ import argparse
 import os
 from pathlib import Path
 import shutil
+import tempfile
 
 FILES = [
     "orbit_and_turn_4K8Bit_01.mov",
@@ -21,28 +22,29 @@ FILES = [
 
 
 def _exclusive_copy(source: Path, target: Path) -> None:
-    """Write a new file without following or overwriting a competing target."""
-    owned_inode = None
+    """Publish a complete copied file without exposing partial target bytes.
+
+    The source is streamed into a private temporary file alongside the final
+    destination and fsynced before the final name exists. Same-filesystem
+    hard-link creation claims the destination atomically and refuses existing
+    files or dangling symlinks without overwriting them. Only our temporary
+    file is removed on failure, including a competing destination race.
+    """
+    fd, temp_name = tempfile.mkstemp(
+        prefix=f".{target.name}.", suffix=".staging", dir=target.parent
+    )
     try:
-        with source.open("rb") as reader:
-            # "xb" uses exclusive creation, including for a dangling symlink.
-            with target.open("xb") as writer:
-                stat = os.fstat(writer.fileno())
-                owned_inode = (stat.st_dev, stat.st_ino)
+        with os.fdopen(fd, "wb") as writer:
+            with source.open("rb") as reader:
                 shutil.copyfileobj(reader, writer, length=1024 * 1024)
-                writer.flush()
-                os.fsync(writer.fileno())
-    except BaseException:
-        # Only remove our own incomplete file, never a replacement created
-        # after a race. Previously existing output is never deleted.
-        if owned_inode is not None:
-            try:
-                current = target.lstat()
-                if (current.st_dev, current.st_ino) == owned_inode:
-                    target.unlink()
-            except FileNotFoundError:
-                pass
-        raise
+            writer.flush()
+            os.fsync(writer.fileno())
+        os.link(temp_name, target, follow_symlinks=False)
+    finally:
+        # No target cleanup: a contender may have published it meanwhile.
+        # Successful publication leaves a complete hard-linked target inode.
+        os.unlink(temp_name)
+
 
 
 def stage_inputs(comfy_root: Path, shot_dir: Path, *, copy: bool = False) -> list[Path]:
