@@ -97,7 +97,13 @@ The base models and checkpoints are not redistributed here.
    deleted. Symlinked `input/` directories are refused for this historical
    helper. Use a destination on a filesystem supporting same-directory
    hard links; concurrent mutation of the input directory is not protected
-   by a process-level lock.
+   by a process-level lock. Copied files use normal exclusive-file
+   creation permissions (mode `0666` filtered by the staging process
+   umask), rather than `mkstemp`'s always-private `0600`; ensure
+   that the operator's umask and directory access permit the intended
+   ComfyUI user to read the result. The unpredictable hidden staging
+   pathname exists while data is written and is not a confidentiality
+   boundary for other users with directory access.
 4. For the ComfyUI-based methods (Edit Anything, FlexAM), load a graph from `workflows/` or
    `workflows/generated/`. For the CLI-based methods (Sync-LoRA, Kiwi-Edit, Ditto high-quality),
    use the corresponding script under `cli/` — each requires you to set an environment variable or
