@@ -94,7 +94,7 @@ class InputStageSafetyTests(unittest.TestCase):
         self.assertEqual(len(observed), 4)
         self.assertFalse(observed[0]["target_visible"])
         self.assertEqual(len(observed[0]["staging_files"]), 1)
-        self.assertEqual(observed[0]["partial"], b"synt")
+        self.assertEqual(observed[0]["partial"], b"synth")
         self.assertEqual(target.read_bytes(), (self.shot / stage.FILES[0]).read_bytes())
         self.assertEqual(list((self.comfy / "input").glob("*.staging")), [])
         self.assertEqual(list((self.comfy / "input").glob(".*.staging")), [])
